@@ -1,6 +1,6 @@
 extends Node
 
-const grav_constant: float = 1
+const grav_constant: float = 0.02
 
 func get_gravity_accel(pos: Vector3) -> Vector3:
 	var accel := Vector3.ZERO
