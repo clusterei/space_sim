@@ -12,10 +12,23 @@ config_version=5
 
 config/name="space_sim"
 config/tags=PackedStringArray("game", "sim")
+run/main_scene="res://world.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
-config/icon="res://icon.svg"
+config/default_angular_damp=0.0
+config/default_linear_damp=0.0
+config/default_gravity=0.0
+
+[autoload]
+
+Global="*res://global.gd"
 
 [editor]
 
 version_control/plugin_name="GitPlugin"
 version_control/autoload_on_startup=true
+
+[physics]
+
+3d/default_gravity=0.0
+3d/default_linear_damp=0.0
+3d/default_angular_damp=0.0

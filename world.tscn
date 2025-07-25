@@ -1,0 +1,42 @@
+[gd_scene load_steps=6 format=3 uid="uid://b81q6t3inolfb"]
+
+[ext_resource type="PackedScene" uid="uid://dydly6xcplv87" path="res://celestial_object.tscn" id="1_84r8t"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_6m3be"]
+radius = 10.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_bb6qw"]
+radius = 10.0
+height = 20.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_jxb6y"]
+radius = 5.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_eoays"]
+radius = 5.0
+height = 10.0
+
+[node name="world" type="Node"]
+
+[node name="obj1" parent="." instance=ExtResource("1_84r8t")]
+mass = 1e+06
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="obj1"]
+shape = SubResource("SphereShape3D_6m3be")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="obj1"]
+mesh = SubResource("SphereMesh_bb6qw")
+
+[node name="obj2" parent="." instance=ExtResource("1_84r8t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 76.088, 0, 0)
+mass = 10000.0
+linear_velocity = Vector3(0, 70, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="obj2"]
+shape = SubResource("SphereShape3D_jxb6y")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="obj2"]
+mesh = SubResource("SphereMesh_eoays")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 84.332)
