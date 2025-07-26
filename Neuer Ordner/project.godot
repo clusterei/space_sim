@@ -12,7 +12,7 @@ config_version=5
 
 config/name="space_sim"
 config/tags=PackedStringArray("game", "sim")
-run/main_scene="res://world.tscn"
+run/main_scene="res://general/world.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/default_angular_damp=0.0
 config/default_linear_damp=0.0
@@ -20,7 +20,7 @@ config/default_gravity=0.0
 
 [autoload]
 
-Global="*res://global.gd"
+Global="*res://general/global.gd"
 
 [editor]
 
