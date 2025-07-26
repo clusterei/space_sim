@@ -1,18 +1,16 @@
-[gd_scene load_steps=9 format=3 uid="uid://b81q6t3inolfb"]
+[gd_scene load_steps=6 format=3 uid="uid://b81q6t3inolfb"]
 
 [ext_resource type="PackedScene" uid="uid://dwdpyxdivwpdo" path="res://objects/star.tscn" id="2_6cheu"]
 [ext_resource type="Script" path="res://camera_control.gd" id="2_48tof"]
-[ext_resource type="Script" path="res://ui.gd" id="2_pe3n0"]
+
 [ext_resource type="PackedScene" uid="uid://dspjkabws8qmw" path="res://objects/moon.tscn" id="3_psg4c"]
-[ext_resource type="Texture2D" uid="uid://gxbu23o8k2gp" path="res://assets/focus_circle.png" id="3_slm3n"]
 [ext_resource type="PackedScene" uid="uid://6cplgnfpmr04" path="res://objects/planet_1.tscn" id="4_bo6wf"]
-[ext_resource type="Texture2D" uid="uid://dmsm1gqkd87lk" path="res://assets/focus_arrow.png" id="4_mic4i"]
 [ext_resource type="PackedScene" uid="uid://dcqoaunfg2h6k" path="res://objects/planet_2.tscn" id="5_70s17"]
 
 [node name="world" type="Node"]
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1000, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40.4145, 223.289, 181.784)
 script = ExtResource("2_48tof")
 
 [node name="UI" type="Control" parent="Camera3D"]
@@ -20,20 +18,20 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
-script = ExtResource("2_pe3n0")
+script = ExtResource("3_lstbb")
 
 [node name="focus_circle" type="Sprite2D" parent="Camera3D/UI"]
 scale = Vector2(0.2, 0.2)
-texture = ExtResource("3_slm3n")
+texture = ExtResource("4_hcgsj")
 
 [node name="potential_focus_circle" type="Sprite2D" parent="Camera3D/UI"]
 scale = Vector2(0.3, 0.3)
-texture = ExtResource("3_slm3n")
+texture = ExtResource("4_hcgsj")
 
 [node name="focus_arrow" type="Sprite2D" parent="Camera3D/UI"]
 position = Vector2(-2.38419e-07, 0)
 scale = Vector2(0.03, 0.03)
-texture = ExtResource("4_mic4i")
+texture = ExtResource("5_3xklk")
 offset = Vector2(-1200, 0)
 
 [node name="temp lighting" type="DirectionalLight3D" parent="."]
