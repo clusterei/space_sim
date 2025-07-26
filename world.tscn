@@ -10,6 +10,13 @@ radius = 10.0
 radius = 100.0
 height = 200.0
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_jxb6y"]
+radius = 5.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_eoays"]
+radius = 5.0
+height = 10.0
+
 [sub_resource type="SphereShape3D" id="SphereShape3D_trlfg"]
 radius = 20.0
 
