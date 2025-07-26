@@ -1,6 +1,6 @@
 extends Camera3D
 
-@onready var reference_frame: RigidBody3D = $"../star"
+@onready var reference_frame: celestial_object = $"../star"
 @onready var reference_offset: Vector3 = reference_frame.position
 var mouse_movement_tracking := Vector2.ZERO
 
@@ -10,7 +10,7 @@ var rot_move_speed: float = 0.15
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
-func change_reference_frame(new: RigidBody3D) -> void:
+func change_reference_frame(new: celestial_object) -> void:
 	#if reference_frame == new: return
 	reference_frame = new
 	reference_offset = new.position
