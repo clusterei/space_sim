@@ -16,8 +16,6 @@ func change_reference_frame(new: celestial_object) -> void:
 	reference_offset = new.position
 
 func _process(delta: float) -> void:
-	delta /= Engine.time_scale
-	
 	do_cam_movement(delta)
 	position += reference_frame.position - reference_offset
 	reference_offset = reference_frame.position
@@ -46,5 +44,5 @@ func do_cam_movement(delta: float) -> void:
 	rotate(basis.z, ang_move_v.z)
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion:
+	if event is InputEventMouse:
 		mouse_movement_tracking = - event.relative
