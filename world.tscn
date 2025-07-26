@@ -1,7 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://b81q6t3inolfb"]
+[gd_scene load_steps=12 format=3 uid="uid://b81q6t3inolfb"]
 
 [ext_resource type="PackedScene" uid="uid://dydly6xcplv87" path="res://celestial_object.tscn" id="1_84r8t"]
 [ext_resource type="Script" path="res://camera_control.gd" id="2_48tof"]
+[ext_resource type="Script" path="res://ui.gd" id="3_lstbb"]
+[ext_resource type="Texture2D" uid="uid://gxbu23o8k2gp" path="res://assets/focus_circle.png" id="4_hcgsj"]
+[ext_resource type="Texture2D" uid="uid://dmsm1gqkd87lk" path="res://assets/focus_arrow.png" id="5_3xklk"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_6m3be"]
 radius = 100.0
@@ -73,7 +76,7 @@ shape = SubResource("SphereShape3D_trlfg")
 mesh = SubResource("SphereMesh_gfi4k")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1000, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40.4145, 223.289, 181.784)
 script = ExtResource("2_48tof")
 
 [node name="UI" type="Control" parent="Camera3D"]
@@ -81,6 +84,21 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+script = ExtResource("3_lstbb")
+
+[node name="focus_circle" type="Sprite2D" parent="Camera3D/UI"]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("4_hcgsj")
+
+[node name="potential_focus_circle" type="Sprite2D" parent="Camera3D/UI"]
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("4_hcgsj")
+
+[node name="focus_arrow" type="Sprite2D" parent="Camera3D/UI"]
+position = Vector2(-2.38419e-07, 0)
+scale = Vector2(0.03, 0.03)
+texture = ExtResource("5_3xklk")
+offset = Vector2(-1200, 0)
 
 [node name="temp lighting" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -0.0814342, 0.996679, 0, -0.996679, -0.0814342, 0, 357.39, 0)
