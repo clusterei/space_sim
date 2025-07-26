@@ -1,7 +1,7 @@
 extends Camera3D
 
-var reference_frame: RigidBody3D = null
-var offset := Vector3.ZERO
+@onready var reference_frame: RigidBody3D = $"../star"
+@onready var reference_offset: Vector3 = reference_frame.position
 var mouse_movement_tracking := Vector2.ZERO
 
 var lin_move_speed: float = 100
@@ -11,11 +11,14 @@ func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 func change_reference_frame(new: RigidBody3D) -> void:
-	if reference_frame == new: return
-	##########
+	#if reference_frame == new: return
+	reference_frame = new
+	reference_offset = new.position
 
 func _process(delta: float) -> void:
 	do_cam_movement(delta)
+	position += reference_frame.position - reference_offset
+	reference_offset = reference_frame.position
 
 func do_cam_movement(delta: float) -> void:
 	var cam_basis = basis
