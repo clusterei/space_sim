@@ -76,5 +76,11 @@ mesh = SubResource("SphereMesh_gfi4k")
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1000, 0)
 script = ExtResource("2_48tof")
 
+[node name="UI" type="Control" parent="Camera3D"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
 [node name="temp lighting" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -0.0814342, 0.996679, 0, -0.996679, -0.0814342, 0, 357.39, 0)
