@@ -1,79 +1,13 @@
-[gd_scene load_steps=12 format=3 uid="uid://b81q6t3inolfb"]
+[gd_scene load_steps=6 format=3 uid="uid://b81q6t3inolfb"]
 
-[ext_resource type="PackedScene" uid="uid://dydly6xcplv87" path="res://celestial_object.tscn" id="1_84r8t"]
+[ext_resource type="PackedScene" uid="uid://dwdpyxdivwpdo" path="res://objects/star.tscn" id="2_6cheu"]
 [ext_resource type="Script" path="res://camera_control.gd" id="2_48tof"]
-[ext_resource type="Script" path="res://ui.gd" id="3_lstbb"]
-[ext_resource type="Texture2D" uid="uid://gxbu23o8k2gp" path="res://assets/focus_circle.png" id="4_hcgsj"]
-[ext_resource type="Texture2D" uid="uid://dmsm1gqkd87lk" path="res://assets/focus_arrow.png" id="5_3xklk"]
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_6m3be"]
-radius = 100.0
-
-[sub_resource type="SphereMesh" id="SphereMesh_bb6qw"]
-radius = 100.0
-height = 200.0
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_jxb6y"]
-radius = 5.0
-
-[sub_resource type="SphereMesh" id="SphereMesh_eoays"]
-radius = 5.0
-height = 10.0
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_trlfg"]
-radius = 20.0
-
-[sub_resource type="SphereMesh" id="SphereMesh_gfi4k"]
-radius = 20.0
-height = 40.0
+[ext_resource type="PackedScene" uid="uid://dspjkabws8qmw" path="res://objects/moon.tscn" id="3_psg4c"]
+[ext_resource type="PackedScene" uid="uid://6cplgnfpmr04" path="res://objects/planet_1.tscn" id="4_bo6wf"]
+[ext_resource type="PackedScene" uid="uid://dcqoaunfg2h6k" path="res://objects/planet_2.tscn" id="5_70s17"]
 
 [node name="world" type="Node"]
-
-[node name="star" parent="." instance=ExtResource("1_84r8t")]
-mass = 1e+09
-surface_radius = 100.0
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="star"]
-shape = SubResource("SphereShape3D_6m3be")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="star"]
-mesh = SubResource("SphereMesh_bb6qw")
-
-[node name="moon" parent="." instance=ExtResource("1_84r8t")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1278.54, 0, 0)
-mass = 1000.0
-linear_velocity = Vector3(0, 0, -70)
-surface_radius = 5.0
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="moon"]
-shape = SubResource("SphereShape3D_jxb6y")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="moon"]
-mesh = SubResource("SphereMesh_eoays")
-
-[node name="planet" parent="." instance=ExtResource("1_84r8t")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1208.23, 0, 0)
-mass = 1e+07
-linear_velocity = Vector3(0, 0, -120)
-surface_radius = 20.0
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="planet"]
-shape = SubResource("SphereShape3D_trlfg")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="planet"]
-mesh = SubResource("SphereMesh_gfi4k")
-
-[node name="planet2" parent="." instance=ExtResource("1_84r8t")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -188.733, 0, 0)
-mass = 1e+07
-linear_velocity = Vector3(0, 0, -350)
-surface_radius = 20.0
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="planet2"]
-shape = SubResource("SphereShape3D_trlfg")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="planet2"]
-mesh = SubResource("SphereMesh_gfi4k")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40.4145, 223.289, 181.784)
@@ -102,3 +36,14 @@ offset = Vector2(-1200, 0)
 
 [node name="temp lighting" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -0.0814342, 0.996679, 0, -0.996679, -0.0814342, 0, 357.39, 0)
+
+[node name="star" parent="." instance=ExtResource("2_6cheu")]
+
+[node name="moon" parent="." instance=ExtResource("3_psg4c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1278.54, 0, 0)
+
+[node name="planet1" parent="." instance=ExtResource("4_bo6wf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1208.54, 0, 0)
+
+[node name="planet2" parent="." instance=ExtResource("5_70s17")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -188.733, 0, 0)
