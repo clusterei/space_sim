@@ -12,7 +12,8 @@
 [node name="world" type="Node"]
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1000, 0)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 2000, 0)
+far = 10000.0
 script = ExtResource("2_48tof")
 
 [node name="UI" type="Control" parent="Camera3D"]
@@ -23,10 +24,12 @@ offset_bottom = 40.0
 script = ExtResource("2_pe3n0")
 
 [node name="focus_circle" type="Sprite2D" parent="Camera3D/UI"]
+modulate = Color(1, 1, 1, 0.529412)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("3_slm3n")
 
 [node name="potential_focus_circle" type="Sprite2D" parent="Camera3D/UI"]
+modulate = Color(1, 1, 1, 0.121569)
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("3_slm3n")
 
@@ -42,10 +45,21 @@ transform = Transform3D(1, 0, 0, 0, -0.0814342, 0.996679, 0, -0.996679, -0.08143
 [node name="star" parent="." instance=ExtResource("2_6cheu")]
 
 [node name="moon" parent="." instance=ExtResource("3_psg4c")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1278.54, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2942.8, 0, 0)
+linear_velocity = Vector3(0, 0, -90)
 
 [node name="planet1" parent="." instance=ExtResource("4_bo6wf")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1208.54, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2872.8, 0, 0)
+linear_velocity = Vector3(0, 0, -140)
 
 [node name="planet2" parent="." instance=ExtResource("5_70s17")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -188.733, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1379.33, 0, 0)
+linear_velocity = Vector3(0, 0, -250)
+
+[node name="planet3" parent="." instance=ExtResource("5_70s17")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1483.56, 0, 0)
+linear_velocity = Vector3(0, 0, -170)
+
+[node name="planet4" parent="." instance=ExtResource("5_70s17")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3789.36, 0, 0)
+linear_velocity = Vector3(0, 0, -110)
