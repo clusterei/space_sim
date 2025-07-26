@@ -62,7 +62,7 @@ mesh = SubResource("SphereMesh_gfi4k")
 [node name="planet2" parent="." instance=ExtResource("1_84r8t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -188.733, 0, 0)
 mass = 1e+07
-linear_velocity = Vector3(0, 0, -400)
+linear_velocity = Vector3(0, 0, -350)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="planet2"]
 shape = SubResource("SphereShape3D_trlfg")
