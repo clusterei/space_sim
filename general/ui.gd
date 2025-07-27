@@ -23,9 +23,11 @@ func _process(_delta: float) -> void:
 	
 	if Input.is_action_just_pressed("ui_left"): Global.change_game_speed(Engine.time_scale / 2.)
 	if Input.is_action_just_pressed("ui_right"): Global.change_game_speed(Engine.time_scale * 2.)
+	$timespeed.visible = Engine.time_scale != 1.
+	$timespeed.text = str(Engine.time_scale)
 
 func update_target_obj_indicators() -> void:
-	potential_target_obj = Global.get_first_intersected_celestial_object(camera.position, - camera.basis.z)
+	potential_target_obj = Global.get_target_celestial_object(camera.position, - camera.basis.z)
 	if potential_target_obj == target_obj: potential_target_obj = null
 	var has_potential_target: bool = potential_target_obj != null
 	potential_focus_circle.visible = has_potential_target

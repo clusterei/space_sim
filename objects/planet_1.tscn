@@ -24,3 +24,6 @@ shape = SubResource("SphereShape3D_trlfg")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("SphereMesh_gfi4k")
+
+[node name="path" type="MeshInstance3D" parent="."]
+top_level = true

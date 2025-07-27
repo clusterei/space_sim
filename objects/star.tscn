@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://dwdpyxdivwpdo"]
+[gd_scene load_steps=6 format=3 uid="uid://dwdpyxdivwpdo"]
 
 [ext_resource type="Script" path="res://objects/celestial_object.gd" id="1_vbuui"]
 
@@ -13,6 +13,8 @@ material = SubResource("StandardMaterial3D_h81oe")
 radius = 500.0
 height = 1000.0
 
+[sub_resource type="ImmediateMesh" id="ImmediateMesh_4m7mv"]
+
 [node name="star" type="RigidBody3D" groups=["celestial_objects"]]
 mass = 3e+09
 script = ExtResource("1_vbuui")
@@ -24,3 +26,7 @@ shape = SubResource("SphereShape3D_mss06")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("SphereMesh_561mo")
 skeleton = NodePath("")
+
+[node name="path" type="MeshInstance3D" parent="."]
+top_level = true
+mesh = SubResource("ImmediateMesh_4m7mv")

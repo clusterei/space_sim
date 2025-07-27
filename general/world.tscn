@@ -12,8 +12,8 @@
 [node name="world" type="Node"]
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 2000, 0)
-far = 10000.0
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 10000, 0)
+far = 20000.0
 script = ExtResource("2_48tof")
 
 [node name="UI" type="Control" parent="Camera3D"]
@@ -39,6 +39,11 @@ scale = Vector2(0.03, 0.03)
 texture = ExtResource("4_mic4i")
 offset = Vector2(-1200, 0)
 
+[node name="timespeed" type="Label" parent="Camera3D/UI"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
 [node name="temp lighting" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -0.0814342, 0.996679, 0, -0.996679, -0.0814342, 0, 357.39, 0)
 
@@ -48,9 +53,13 @@ transform = Transform3D(1, 0, 0, 0, -0.0814342, 0.996679, 0, -0.996679, -0.08143
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2942.8, 0, 0)
 linear_velocity = Vector3(0, 0, -90)
 
+[node name="wandermoon" parent="." instance=ExtResource("3_psg4c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5489.32, 0, 0)
+linear_velocity = Vector3(0, 0, -55)
+
 [node name="planet1" parent="." instance=ExtResource("4_bo6wf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2872.8, 0, 0)
-linear_velocity = Vector3(0, 0, -140)
+linear_velocity = Vector3(0, 0, -150)
 
 [node name="planet2" parent="." instance=ExtResource("5_70s17")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1379.33, 0, 0)
@@ -61,5 +70,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1483.56, 0, 0)
 linear_velocity = Vector3(0, 0, -170)
 
 [node name="planet4" parent="." instance=ExtResource("5_70s17")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3789.36, 0, 0)
-linear_velocity = Vector3(0, 0, -110)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4838.74, 0, 0)
+linear_velocity = Vector3(0, 0, -120)

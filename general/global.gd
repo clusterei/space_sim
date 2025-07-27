@@ -15,17 +15,28 @@ func get_gravity_accel(pos: Vector3) -> Vector3:
 		accel += diff / d * strength
 	return accel
 
-func get_first_intersected_celestial_object(pos: Vector3, dir: Vector3) -> celestial_object:
+func get_target_celestial_object(pos: Vector3, dir: Vector3) -> celestial_object:
+	var raycast_mode := true
+	const angle_limit: float = deg_to_rad(10)
+	
 	var hit_obj = null
 	var hit_obj_d: float = INF
 	for cl_object in get_tree().get_nodes_in_group("celestial_objects"):
 		var obj_pos: Vector3 = cl_object.position
 		var closest_point_d: float = (obj_pos - pos).dot(dir)
-		if closest_point_d > hit_obj_d or closest_point_d < 0.: continue
-		var point_obj_d_sq: float = (pos + dir * closest_point_d - obj_pos).length_squared()
-		if pow(cl_object.surface_radius, 2) >= point_obj_d_sq:
-			hit_obj = cl_object
-			hit_obj_d = closest_point_d
+		if raycast_mode:
+			if closest_point_d > hit_obj_d or closest_point_d < 0.: continue
+			var point_obj_d_sq: float = (pos + dir * closest_point_d - obj_pos).length_squared()
+			if pow(cl_object.surface_radius, 2) >= point_obj_d_sq:
+				hit_obj = cl_object
+				hit_obj_d = closest_point_d
+		else:
+			####work inn progress
+			var angle: float = abs(cos(closest_point_d))
+			if angle <= angle_limit and angle <= hit_obj_d:
+				hit_obj = cl_object
+				hit_obj_d = angle
+			
 	return hit_obj
 
 func change_game_speed(speed: float) -> void:

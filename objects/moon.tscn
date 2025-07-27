@@ -25,3 +25,6 @@ shape = SubResource("SphereShape3D_6m3be")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("SphereMesh_bb6qw")
 skeleton = NodePath("")
+
+[node name="path" type="MeshInstance3D" parent="."]
+top_level = true
