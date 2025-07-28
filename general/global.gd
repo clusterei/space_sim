@@ -3,6 +3,7 @@ extends Node
 const grav_constant: float = 0.02
 var previous_game_speed: float = Engine.time_scale
 @onready var cel_objects := get_tree().get_nodes_in_group("celestial_objects")####dont have group and make manually or detect group updates automatically
+var reference_frame: celestial_object
 
 func get_gravity_accel(pos: Vector3) -> Vector3:
 	var accel := Vector3.ZERO
@@ -44,9 +45,10 @@ func change_game_speed(speed: float) -> void:
 	Engine.physics_ticks_per_second = int(max(speed, 1.) * ProjectSettings.get_setting("physics/common/physics_ticks_per_second"))
 
 func predict_paths() -> Array[PackedVector3Array]:#####work in progress
-	var num_steps: int = 200
-	var stepsize: float = 0.1
-	#var ref_frame_obj_index: int = 0
+	var num_steps: int = 200000
+	var grainyness: int = 50
+	var stepsize: float = 1. / 60.
+	var ref_frame_obj_index: int = 0#####get ref object
 	
 	var num_objs: int = cel_objects.size()
 	var path_arr_arr: Array[PackedVector3Array] = []
@@ -55,7 +57,7 @@ func predict_paths() -> Array[PackedVector3Array]:#####work in progress
 	var mass_arr := PackedFloat32Array()
 	for obj in cel_objects:
 		var path_arr := PackedVector3Array()
-		path_arr.resize(num_steps)
+		path_arr.resize(int(ceil(num_steps / float(grainyness))))
 		path_arr_arr.append(path_arr)
 		pos_arr.append(obj.position)
 		vel_arr.append(obj.linear_velocity)
@@ -63,12 +65,21 @@ func predict_paths() -> Array[PackedVector3Array]:#####work in progress
 	var new_pos_arr := PackedVector3Array()
 	new_pos_arr.resize(num_objs)
 	
+	var grainy_progress: int = 0
+	var path_index: int = 0
 	for i in num_steps:
-		#var ref_frame_offset := pos_arr[ref_frame_obj_index]#to adjust for ref frame moving
+		if grainy_progress == 0:
+			grainy_progress = grainyness
+			for j in num_objs:
+				path_arr_arr[j][path_index] = pos_arr[j]
+			path_index += 1
+		grainy_progress -= 1
+		
+		var ref_frame_offset := pos_arr[ref_frame_obj_index]#to adjust for ref frame moving
 		for j in num_objs:
 			var accel := Vector3.ZERO
 			var pos: Vector3 = pos_arr[j]
-			path_arr_arr[j][i] = pos#updates path
+			#path_arr_arr[j][i] = pos#updates path
 			for k in num_objs:
 				var diff: Vector3 = pos_arr[k] - pos
 				var d: float = diff.length()
@@ -76,7 +87,24 @@ func predict_paths() -> Array[PackedVector3Array]:#####work in progress
 				var strength: float = grav_constant * mass_arr[k] / pow(d, 2)
 				accel += diff / d * strength
 			vel_arr[j] += accel * stepsize
-			new_pos_arr[j] = pos + vel_arr[j] * stepsize# - ref_frame_offset
+			new_pos_arr[j] = pos + vel_arr[j] * stepsize - ref_frame_offset
 		pos_arr = new_pos_arr.duplicate()
 	
 	return path_arr_arr
+
+func _ready() -> void:
+	return
+	###temp test
+	var path_arr_arr := predict_paths()
+	
+	for i in cel_objects.size():
+		var pred_path := MeshInstance3D.new()
+		pred_path.top_level = true
+		pred_path.name = "pred_path"
+		var mesh := ImmediateMesh.new()
+		mesh.clear_surfaces()
+		mesh.surface_begin(Mesh.PRIMITIVE_LINE_STRIP)
+		for pos in path_arr_arr[i]: mesh.surface_add_vertex(pos)
+		mesh.surface_end()
+		pred_path.mesh = mesh
+		cel_objects[i].add_child(pred_path)

@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://b81q6t3inolfb"]
 
 [ext_resource type="PackedScene" uid="uid://dwdpyxdivwpdo" path="res://objects/star.tscn" id="2_6cheu"]
-[ext_resource type="Script" path="res://general/camera_control.gd" id="2_48tof"]
+[ext_resource type="Script" path="res://general/freecam_control.gd" id="2_48tof"]
 [ext_resource type="PackedScene" uid="uid://dspjkabws8qmw" path="res://objects/moon.tscn" id="3_psg4c"]
 [ext_resource type="PackedScene" uid="uid://6cplgnfpmr04" path="res://objects/planet_1.tscn" id="4_bo6wf"]
 [ext_resource type="PackedScene" uid="uid://dcqoaunfg2h6k" path="res://objects/planet_2.tscn" id="5_70s17"]

@@ -1,7 +1,5 @@
 extends RigidBody3D
-class_name celestial_object
-
-@export var surface_radius: float
+class_name noncelestial_object
 
 const num_path_nodes: int = 1000
 var previous_positions: PackedVector3Array
@@ -29,7 +27,7 @@ func _physics_process(_delta: float) -> void:
 func _process(_delta: float) -> void:
 	update_path()
 
-func update_path() -> void:
+func update_path() -> void:####maove func to global????
 	var mesh := ImmediateMesh.new()
 	mesh.clear_surfaces()
 	mesh.surface_begin(Mesh.PRIMITIVE_LINE_STRIP)
