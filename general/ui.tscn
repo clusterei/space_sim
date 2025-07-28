@@ -1,8 +1,26 @@
-[gd_scene load_steps=4 format=3 uid="uid://dqy8pfunftkxq"]
+[gd_scene load_steps=9 format=3 uid="uid://dqy8pfunftkxq"]
 
 [ext_resource type="Script" path="res://general/ui.gd" id="1_m7gho"]
 [ext_resource type="Texture2D" uid="uid://gxbu23o8k2gp" path="res://assets/focus_circle.png" id="2_uuhvn"]
 [ext_resource type="Texture2D" uid="uid://dmsm1gqkd87lk" path="res://assets/focus_arrow.png" id="3_xmsno"]
+
+[sub_resource type="World3D" id="World3D_8ij4e"]
+
+[sub_resource type="Environment" id="Environment_g1kro"]
+background_mode = 1
+ambient_light_source = 1
+reflected_light_source = 1
+
+[sub_resource type="SphereMesh" id="SphereMesh_ygycc"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_chgaa"]
+top_radius = 0.05
+bottom_radius = 0.05
+height = 1.7
+
+[sub_resource type="TorusMesh" id="TorusMesh_qyb0o"]
+inner_radius = 0.45
+outer_radius = 0.55
 
 [node name="UI" type="Control"]
 layout_mode = 3
@@ -29,13 +47,10 @@ offset = Vector2(-1200, 0)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 0
-offset_left = 12.0
-offset_top = 9.0
-offset_right = 52.0
-offset_bottom = 113.0
-
-[node name="timespeed" type="Label" parent="VBoxContainer"]
-layout_mode = 2
+offset_left = 174.0
+offset_top = 33.0
+offset_right = 214.0
+offset_bottom = 137.0
 
 [node name="tardist" type="Label" parent="VBoxContainer"]
 layout_mode = 2
@@ -45,3 +60,44 @@ layout_mode = 2
 
 [node name="gravaccel" type="Label" parent="VBoxContainer"]
 layout_mode = 2
+
+[node name="timespeed" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+layout_mode = 0
+offset_left = 23.0
+offset_top = 19.0
+offset_right = 151.0
+offset_bottom = 147.0
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+world_3d = SubResource("World3D_8ij4e")
+handle_input_locally = false
+size = Vector2i(128, 128)
+render_target_update_mode = 4
+
+[node name="navball" type="Camera3D" parent="SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.849678)
+environment = SubResource("Environment_g1kro")
+projection = 1
+size = 2.0
+
+[node name="ball" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/navball"]
+top_level = true
+mesh = SubResource("SphereMesh_ygycc")
+skeleton = NodePath("")
+
+[node name="poles" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/navball/ball"]
+mesh = SubResource("CylinderMesh_chgaa")
+
+[node name="equator" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/navball/ball"]
+mesh = SubResource("TorusMesh_qyb0o")
+
+[node name="northlight" type="OmniLight3D" parent="SubViewportContainer/SubViewport/navball/ball"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+light_color = Color(1, 0, 0, 1)
+
+[node name="southlight" type="OmniLight3D" parent="SubViewportContainer/SubViewport/navball/ball"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+light_color = Color(0, 0, 1, 1)

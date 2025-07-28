@@ -9,6 +9,7 @@ extends Control
 @onready var relspeed_label: Label = $VBoxContainer/tarrelvel
 @onready var screensize: Vector2 = get_viewport_rect().size
 @onready var camera_list: Array[Camera3D] = [$"../freecam", $"../noncel_testobj/Camera3D"]
+@onready var navball_mesh: MeshInstance3D = $SubViewportContainer/SubViewport/navball/ball
 var mouse_movement_tracking := Vector2.ZERO
 var target_obj: celestial_object = null
 var previous_tar_d: float
@@ -31,8 +32,7 @@ func _process(delta: float) -> void:
 	
 	if Input.is_action_just_pressed("time_down"): Global.change_game_speed(Engine.time_scale / 2.)
 	if Input.is_action_just_pressed("time_up"): Global.change_game_speed(Engine.time_scale * 2.)
-	var time_scale := Engine.time_scale
-	time_label.visible = time_scale != 1.
+	time_label.visible = Engine.time_scale != 1.
 	time_label.text = "t: " + str(Engine.time_scale)
 	
 	if Input.is_action_just_pressed("switch_cam"):
@@ -44,6 +44,11 @@ func _process(delta: float) -> void:
 	if Input.is_action_pressed("boost"): vectors[0] *= camera_list[0].boost_mult
 	camera_list[0].apply_cam_inputs(vectors[0], vectors[1])
 	
+	update_ui_labels()
+	
+	navball_mesh.basis = camera_list[0].global_basis.inverse()
+
+func update_ui_labels() -> void:
 	var has_tar := target_obj != null
 	gravity_label.visible = has_tar
 	distance_label.visible = has_tar
@@ -56,7 +61,7 @@ func _process(delta: float) -> void:
 		
 		distance_label.text = "d_surf: " + str(round_by(d_to_tar - target_obj.surface_radius, 2))
 		
-		var tar_obj_d_change = (previous_tar_d - d_to_tar) / time_scale
+		var tar_obj_d_change = (previous_tar_d - d_to_tar) / Engine.time_scale
 		previous_tar_d = d_to_tar
 		relspeed_label.text = "v_rel: " + str(round_by(tar_obj_d_change, 2))
 		
