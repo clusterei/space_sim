@@ -1,31 +1,47 @@
 extends Control
 
-@onready var camera: Camera3D = $".."
 @onready var focus_circle: Sprite2D = $focus_circle
 @onready var potential_focus_circle: Sprite2D = $potential_focus_circle
 @onready var focus_arrow: Sprite2D = $focus_arrow
+@onready var time_label: Label = $timespeed
 @onready var screensize: Vector2 = get_viewport_rect().size
-
+@onready var camera_list: Array[Camera3D] = [$"../freecam", $"../noncel_testobj/Camera3D"]
+var mouse_movement_tracking := Vector2.ZERO
 var target_obj: celestial_object = null
 var potential_target_obj: celestial_object = null
 
 func _ready() -> void:
 	get_viewport().size_changed.connect(update_screensize)
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	
+	change_reference_frame($"../star")
 
 func update_screensize() -> void:
 	screensize = get_viewport_rect().size
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	update_target_obj_indicators()
 	
 	if Input.is_action_just_pressed("make_tar_obj_ref_frame") and target_obj != null:
-		$"..".change_reference_frame(target_obj)
+		change_reference_frame(target_obj)
 	
-	if Input.is_action_just_pressed("ui_left"): Global.change_game_speed(Engine.time_scale / 2.)
-	if Input.is_action_just_pressed("ui_right"): Global.change_game_speed(Engine.time_scale * 2.)
+	if Input.is_action_just_pressed("time_down"): Global.change_game_speed(Engine.time_scale / 2.)
+	if Input.is_action_just_pressed("time_up"): Global.change_game_speed(Engine.time_scale * 2.)
+	time_label.visible = Engine.time_scale != 1.
+	time_label.text = str(Engine.time_scale)
+	
+	if Input.is_action_just_pressed("switch_cam"):
+		camera_list.reverse()
+		camera_list[0].current = true
+		camera_list[1].current = false
+	
+	var vectors := get_cam_move_inputs(delta / Engine.time_scale)
+	if Input.is_action_pressed("boost"): vectors[0] *= camera_list[0].boost_mult
+	camera_list[0].apply_cam_inputs(vectors[0], vectors[1])
 
 func update_target_obj_indicators() -> void:
-	potential_target_obj = Global.get_first_intersected_celestial_object(camera.position, - camera.basis.z)
+	var camera := camera_list[0]
+	potential_target_obj = Global.get_target_celestial_object(camera.global_position, - camera.global_basis.z)
 	if potential_target_obj == target_obj: potential_target_obj = null
 	var has_potential_target: bool = potential_target_obj != null
 	potential_focus_circle.visible = has_potential_target
@@ -51,9 +67,43 @@ func update_target_obj_indicators() -> void:
 			focus_arrow.position = screen_tar_pos.clamp(Vector2.ZERO, screensize)
 			######determine dir using angle between camera dir and tar pos instead of projection and intersect with screenedge instead of clamping
 
-func check_target_selection() -> void:
-	target_obj = potential_target_obj
-
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == 1 and event.pressed:
-		check_target_selection()
+		target_obj = potential_target_obj
+	elif event is InputEventMouseMotion:
+		mouse_movement_tracking = - event.relative
+
+func get_cam_move_inputs(delta: float) -> PackedVector3Array:
+	var cam_basis = camera_list[0].global_basis
+	
+	var lin_move_v := Vector3.ZERO
+	if Input.is_action_pressed("forw"): lin_move_v -= cam_basis.z
+	if Input.is_action_pressed("back"): lin_move_v += cam_basis.z
+	if Input.is_action_pressed("up"): lin_move_v += cam_basis.y
+	if Input.is_action_pressed("down"): lin_move_v -= cam_basis.y
+	if Input.is_action_pressed("right"): lin_move_v += cam_basis.x
+	if Input.is_action_pressed("left"): lin_move_v -= cam_basis.x
+	lin_move_v = lin_move_v.normalized()
+	lin_move_v *= camera_list[0].lin_move_speed * delta
+	
+	var ang_move_v := Vector3.ZERO
+	ang_move_v.x = mouse_movement_tracking.x
+	ang_move_v.y = mouse_movement_tracking.y
+	mouse_movement_tracking = Vector2.ZERO
+	if Input.is_action_pressed("Lroll"): ang_move_v.z += 10
+	if Input.is_action_pressed("Rroll"): ang_move_v.z -= 10
+	ang_move_v *= camera_list[0].rot_move_speed * delta
+	
+	return PackedVector3Array([lin_move_v, ang_move_v])
+
+func change_reference_frame(new: celestial_object) -> void:
+	#if Global.reference_frame == new: return
+	if Global.reference_frame != null:
+		Global.reference_frame.get_node("path").visible = true
+	new.get_node("path").visible = false
+	Global.reference_frame = new
+	$"../freecam".reference_offset = new.position
+	
+	####quick hack; #####reset all paths including noncel. obj.
+	for cl_obj in get_tree().get_nodes_in_group("celestial_objects"):
+		cl_obj.init_path()
