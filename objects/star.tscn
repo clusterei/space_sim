@@ -3,22 +3,22 @@
 [ext_resource type="Script" path="res://objects/celestial_object.gd" id="1_vbuui"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_mss06"]
-radius = 1000.0
+radius = 2000.0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h81oe"]
 albedo_color = Color(0.88844, 0.666933, 0.126972, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_561mo"]
 material = SubResource("StandardMaterial3D_h81oe")
-radius = 1000.0
-height = 2000.0
+radius = 2000.0
+height = 4000.0
 
 [sub_resource type="ImmediateMesh" id="ImmediateMesh_4m7mv"]
 
 [node name="star" type="RigidBody3D" groups=["celestial_objects"]]
-mass = 3e+09
+mass = 1e+10
 script = ExtResource("1_vbuui")
-surface_radius = 1000.0
+surface_radius = 2000.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_mss06")

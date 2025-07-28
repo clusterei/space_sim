@@ -1,6 +1,6 @@
 extends Node
 
-const grav_constant: float = 0.02
+const grav_constant: float = 0.001
 var previous_game_speed: float = Engine.time_scale
 @onready var cel_objects := get_tree().get_nodes_in_group("celestial_objects")####dont have group and make manually or detect group updates automatically
 var reference_frame: celestial_object
@@ -44,11 +44,36 @@ func change_game_speed(speed: float) -> void:
 	Engine.time_scale = speed
 	Engine.physics_ticks_per_second = int(max(speed, 1.) * ProjectSettings.get_setting("physics/common/physics_ticks_per_second"))
 
+
+
+
+func _process(_delta: float) -> void:
+	return
+	###temp test
+	var path_arr_arr := predict_paths()
+	
+	for i in cel_objects.size():
+		var pred_path: MeshInstance3D
+		if not cel_objects[i].has_node("pred_path"):
+			pred_path = MeshInstance3D.new()
+			pred_path.top_level = true
+			pred_path.name = "pred_path"
+			cel_objects[i].add_child(pred_path)
+		else:
+			pred_path = cel_objects[i].get_node("pred_path")
+		
+		var mesh := ImmediateMesh.new()
+		mesh.clear_surfaces()
+		mesh.surface_begin(Mesh.PRIMITIVE_LINE_STRIP)
+		for pos in path_arr_arr[i]: mesh.surface_add_vertex(pos)
+		mesh.surface_end()
+		pred_path.mesh = mesh
+
 func predict_paths() -> Array[PackedVector3Array]:#####work in progress
-	var num_steps: int = 200000
-	var grainyness: int = 50
+	var num_steps: int = 300000
+	var grainyness: int = 30
 	var stepsize: float = 1. / 60.
-	var ref_frame_obj_index: int = 0#####get ref object
+	var ref_frame_obj_index: int = 0#####get reference_frame index
 	
 	var num_objs: int = cel_objects.size()
 	var path_arr_arr: Array[PackedVector3Array] = []
@@ -91,20 +116,3 @@ func predict_paths() -> Array[PackedVector3Array]:#####work in progress
 		pos_arr = new_pos_arr.duplicate()
 	
 	return path_arr_arr
-
-func _ready() -> void:
-	return
-	###temp test
-	var path_arr_arr := predict_paths()
-	
-	for i in cel_objects.size():
-		var pred_path := MeshInstance3D.new()
-		pred_path.top_level = true
-		pred_path.name = "pred_path"
-		var mesh := ImmediateMesh.new()
-		mesh.clear_surfaces()
-		mesh.surface_begin(Mesh.PRIMITIVE_LINE_STRIP)
-		for pos in path_arr_arr[i]: mesh.surface_add_vertex(pos)
-		mesh.surface_end()
-		pred_path.mesh = mesh
-		cel_objects[i].add_child(pred_path)

@@ -1,22 +1,20 @@
-[gd_scene load_steps=11 format=3 uid="uid://b81q6t3inolfb"]
+[gd_scene load_steps=9 format=3 uid="uid://b81q6t3inolfb"]
 
 [ext_resource type="Script" path="res://general/freecam_control.gd" id="1_m6xeh"]
 [ext_resource type="PackedScene" uid="uid://dwdpyxdivwpdo" path="res://objects/star.tscn" id="2_6cheu"]
-[ext_resource type="Script" path="res://general/ui.gd" id="2_pe3n0"]
 [ext_resource type="PackedScene" uid="uid://dspjkabws8qmw" path="res://objects/moon.tscn" id="3_psg4c"]
-[ext_resource type="Texture2D" uid="uid://gxbu23o8k2gp" path="res://assets/focus_circle.png" id="3_slm3n"]
 [ext_resource type="PackedScene" uid="uid://6cplgnfpmr04" path="res://objects/planet_1.tscn" id="4_bo6wf"]
-[ext_resource type="Texture2D" uid="uid://dmsm1gqkd87lk" path="res://assets/focus_arrow.png" id="4_mic4i"]
 [ext_resource type="PackedScene" uid="uid://dcqoaunfg2h6k" path="res://objects/planet_2.tscn" id="5_70s17"]
+[ext_resource type="PackedScene" uid="uid://dqy8pfunftkxq" path="res://general/ui.tscn" id="8_k8y41"]
 [ext_resource type="PackedScene" uid="uid://1tivb3ryftoq" path="res://objects/planet_3.tscn" id="9_vvtab"]
 [ext_resource type="PackedScene" uid="uid://cd3udq8a76ksx" path="res://objects/noncel_testobj.tscn" id="10_pyd7g"]
 
 [node name="world" type="Node"]
 
 [node name="freecam" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 5000, 0)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 15000, 0)
 current = true
-far = 20000.0
+far = 50000.0
 script = ExtResource("1_m6xeh")
 
 [node name="temp lighting" type="DirectionalLight3D" parent="."]
@@ -25,65 +23,38 @@ transform = Transform3D(1, 0, 0, 0, -0.0814342, 0.996679, 0, -0.996679, -0.08143
 [node name="star" parent="." instance=ExtResource("2_6cheu")]
 
 [node name="moon" parent="." instance=ExtResource("3_psg4c")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2942.8, 0, 0)
-linear_velocity = Vector3(0, 0, -90)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5519, 0, 0)
+linear_velocity = Vector3(0, 0, -38)
 
-[node name="planet1" parent="." instance=ExtResource("4_bo6wf")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2872.8, 0, 0)
-linear_velocity = Vector3(0, 0, -150)
+[node name="green" parent="." instance=ExtResource("4_bo6wf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5293.57, 0, 0)
+linear_velocity = Vector3(0, 0, -45)
 
-[node name="planet2" parent="." instance=ExtResource("5_70s17")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1379.33, 0, 0)
-linear_velocity = Vector3(0, 0, -250)
+[node name="twin1" parent="." instance=ExtResource("5_70s17")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3363.08, 0, 0)
+linear_velocity = Vector3(0, 0, -59)
 
-[node name="planet3" parent="." instance=ExtResource("5_70s17")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1483.56, 0, 0)
-linear_velocity = Vector3(0, 0, -170)
+[node name="twin2" parent="." instance=ExtResource("5_70s17")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3630.75, 0, 0)
+linear_velocity = Vector3(0, 0, -48)
 
-[node name="planet4" parent="." instance=ExtResource("5_70s17")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4838.74, 0, 0)
-linear_velocity = Vector3(0, 0, -120)
+[node name="lone" parent="." instance=ExtResource("5_70s17")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7490.03, 0, 0)
+linear_velocity = Vector3(0, 0, -38)
 
-[node name="planet5" parent="." instance=ExtResource("9_vvtab")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7762.47, 0, 0)
-linear_velocity = Vector3(0, 0, -90)
+[node name="giant" parent="." instance=ExtResource("9_vvtab")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16121.6, 0, 0)
+linear_velocity = Vector3(0, 0, -26)
 
 [node name="moon2" parent="." instance=ExtResource("3_psg4c")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7600.94, 0, 0)
-linear_velocity = Vector3(0, 0, -200)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15597, 0, 0)
 
 [node name="moon3" parent="." instance=ExtResource("3_psg4c")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7356.89, 0, 0)
-linear_velocity = Vector3(0, 0, -145)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15400.3, 0, 0)
+linear_velocity = Vector3(0, 0, -63)
 
 [node name="noncel_testobj" parent="." instance=ExtResource("10_pyd7g")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2788.11, 0, 0)
-linear_velocity = Vector3(0, 30, -130)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5158.85, 0, 0)
+linear_velocity = Vector3(0, 3, -53)
 
-[node name="UI" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-script = ExtResource("2_pe3n0")
-
-[node name="focus_circle" type="Sprite2D" parent="UI"]
-modulate = Color(1, 1, 1, 0.529412)
-scale = Vector2(0.2, 0.2)
-texture = ExtResource("3_slm3n")
-
-[node name="potential_focus_circle" type="Sprite2D" parent="UI"]
-modulate = Color(1, 1, 1, 0.121569)
-scale = Vector2(0.3, 0.3)
-texture = ExtResource("3_slm3n")
-
-[node name="focus_arrow" type="Sprite2D" parent="UI"]
-position = Vector2(-2.38419e-07, 0)
-scale = Vector2(0.03, 0.03)
-texture = ExtResource("4_mic4i")
-offset = Vector2(-1200, 0)
-
-[node name="timespeed" type="Label" parent="UI"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
+[node name="UI" parent="." instance=ExtResource("8_k8y41")]

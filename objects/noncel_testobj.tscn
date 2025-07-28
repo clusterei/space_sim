@@ -26,5 +26,7 @@ top_level = true
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.09168)
-far = 20000.0
+far = 50000.0
 script = ExtResource("2_jyice")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

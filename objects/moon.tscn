@@ -3,21 +3,21 @@
 [ext_resource type="Script" path="res://objects/celestial_object.gd" id="1_sbf51"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_6m3be"]
-radius = 5.0
+radius = 20.0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xjpxl"]
 albedo_color = Color(0.332881, 0.332881, 0.332881, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_bb6qw"]
 material = SubResource("StandardMaterial3D_xjpxl")
-radius = 5.0
-height = 10.0
+radius = 20.0
+height = 40.0
 
 [node name="moon" type="RigidBody3D" groups=["celestial_objects"]]
-mass = 1000.0
+mass = 100000.0
 linear_velocity = Vector3(0, 0, -70)
 script = ExtResource("1_sbf51")
-surface_radius = 5.0
+surface_radius = 20.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_6m3be")

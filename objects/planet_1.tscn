@@ -3,21 +3,21 @@
 [ext_resource type="Script" path="res://objects/celestial_object.gd" id="1_vg1mt"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_trlfg"]
-radius = 20.0
+radius = 70.0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tkc42"]
 albedo_color = Color(0.517647, 0.764706, 0.360784, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_gfi4k"]
 material = SubResource("StandardMaterial3D_tkc42")
-radius = 20.0
-height = 40.0
+radius = 70.0
+height = 140.0
 
 [node name="planet1" type="RigidBody3D" groups=["celestial_objects"]]
 mass = 1e+07
 linear_velocity = Vector3(0, 0, -120)
 script = ExtResource("1_vg1mt")
-surface_radius = 20.0
+surface_radius = 70.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_trlfg")

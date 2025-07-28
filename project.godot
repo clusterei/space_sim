@@ -22,6 +22,10 @@ config/default_gravity=0.0
 
 Global="*res://general/global.gd"
 
+[display]
+
+window/size/mode=2
+
 [editor]
 
 version_control/plugin_name="GitPlugin"

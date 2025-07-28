@@ -4,7 +4,7 @@ class_name noncelestial_object
 const num_path_nodes: int = 1000
 var previous_positions: PackedVector3Array
 var path_I: int
-const path_node_d_limit: float = 500####use angle instead
+const path_node_d_limit: float = 100####use angle instead
 
 func _ready() -> void:
 	init_path()
@@ -45,3 +45,6 @@ func update_path() -> void:####maove func to global????
 	$path.position = Global.reference_frame.position#quick hack
 	#$path.visible = $"../Camera3D".reference_frame != self
 	#$pred_path.position = $"../Camera3D".reference_frame.position#quick hack
+
+func _on_body_entered(body: Node) -> void:
+	if body in Global.cel_objects: print("! ", self.name, " collided with ", body.name, " !")

@@ -3,10 +3,10 @@ class_name celestial_object
 
 @export var surface_radius: float
 
-const num_path_nodes: int = 1000
+const num_path_nodes: int = 2000
 var previous_positions: PackedVector3Array
 var path_I: int
-const path_node_d_limit: float = 500####use angle instead
+const path_node_d_limit: float = 300####use angle instead
 
 func _ready() -> void:
 	init_path()
