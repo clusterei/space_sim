@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://b81q6t3inolfb"]
+[gd_scene load_steps=10 format=3 uid="uid://b81q6t3inolfb"]
 
 [ext_resource type="Script" path="res://general/freecam_control.gd" id="1_m6xeh"]
 [ext_resource type="PackedScene" uid="uid://dwdpyxdivwpdo" path="res://objects/star.tscn" id="2_6cheu"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://6cplgnfpmr04" path="res://objects/planet_1.tscn" id="4_bo6wf"]
 [ext_resource type="PackedScene" uid="uid://dcqoaunfg2h6k" path="res://objects/planet_2.tscn" id="5_70s17"]
 [ext_resource type="PackedScene" uid="uid://dqy8pfunftkxq" path="res://general/ui.tscn" id="8_k8y41"]
+[ext_resource type="Script" path="res://general/editor_path_predictiontool.gd" id="9_26f1g"]
 [ext_resource type="PackedScene" uid="uid://1tivb3ryftoq" path="res://objects/planet_3.tscn" id="9_vvtab"]
 [ext_resource type="PackedScene" uid="uid://cd3udq8a76ksx" path="res://objects/noncel_testobj.tscn" id="10_pyd7g"]
 
@@ -39,8 +40,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3630.75, 0, 0)
 linear_velocity = Vector3(0, 0, -48)
 
 [node name="lone" parent="." instance=ExtResource("5_70s17")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7490.03, 0, 0)
-linear_velocity = Vector3(0, 0, -38)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7481.94, 0, 0)
+linear_velocity = Vector3(0, 0, -40)
 
 [node name="giant" parent="." instance=ExtResource("9_vvtab")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16121.6, 0, 0)
@@ -58,3 +59,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5158.85, 0, 0)
 linear_velocity = Vector3(0, 3, -53)
 
 [node name="UI" parent="." instance=ExtResource("8_k8y41")]
+
+[node name="editor_path_tool" type="Node" parent="."]
+script = ExtResource("9_26f1g")
+num_steps = 50000
