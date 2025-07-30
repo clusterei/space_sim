@@ -16,5 +16,5 @@ func apply_cam_inputs(lin_move_v: Vector3, ang_move_v: Vector3) -> void:
 	position += Global.reference_frame.position - reference_offset
 	reference_offset = Global.reference_frame.position
 
-#func get_vel() -> Vector3:
-#	return Vector3.ZERO
+func get_vel() -> Vector3:
+	return Vector3.ZERO

@@ -12,12 +12,6 @@
 
 [node name="world" type="Node"]
 
-[node name="freecam" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 15000, 0)
-current = true
-far = 50000.0
-script = ExtResource("1_m6xeh")
-
 [node name="temp lighting" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -0.0814342, 0.996679, 0, -0.996679, -0.0814342, 0, 357.39, 0)
 
@@ -58,8 +52,14 @@ linear_velocity = Vector3(0, 0, -63)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5158.85, 0, 0)
 linear_velocity = Vector3(0, 3, -53)
 
+[node name="freecam" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 15000, 0)
+current = true
+far = 50000.0
+script = ExtResource("1_m6xeh")
+
 [node name="UI" parent="." instance=ExtResource("8_k8y41")]
 
 [node name="editor_path_tool" type="Node" parent="."]
 script = ExtResource("9_26f1g")
-num_steps = 50000
+num_steps = 50001

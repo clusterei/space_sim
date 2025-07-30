@@ -1,6 +1,6 @@
 extends Camera3D
 
-const lin_move_speed: float = 2. * 2#dont forget mass!
+const lin_move_speed: float = 1. * 2#dont forget mass!
 const boost_mult: float = 10
 const rot_move_speed: float = 0.15 * 2#dont forget mass!
 
@@ -31,5 +31,5 @@ func apply_cam_inputs(lin_move_v: Vector3, ang_move_v: Vector3) -> void:
 		if ang_move_v.z == 0:
 			parent.apply_torque_impulse(- p_basis.z * torque.z)
 
-#func get_vel() -> Vector3:
-#	return parent.linear_velocity
+func get_vel() -> Vector3:
+	return parent.linear_velocity

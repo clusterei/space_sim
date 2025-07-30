@@ -1,11 +1,12 @@
 @tool
 extends Node
 
-var grainyness: int = 100
-var stepsize: float = 1. / 60.
+@export var grainyness: int = 100
+@export var stepsize: float = 1. / 60.
 @export var ref_frame_obj_index: int = 0#####get reference_frame index
 @export var num_steps: int = 0
 @export var steps_per_frame: int = 2000
+@export var trigger_recalc := false
 
 var path_arr_arr: Array[PackedVector3Array]
 var progress: int = 0
@@ -19,6 +20,9 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	var cel_objects: Array = get_tree().get_nodes_in_group("celestial_objects")
+	if trigger_recalc:
+		progress = 0
+		trigger_recalc = false
 	
 	var diff_detected := progress == 0
 	if not diff_detected:
@@ -61,9 +65,11 @@ func draw_trajectory(cel_objects: Array) -> void:
 		var mesh := ImmediateMesh.new()
 		mesh.clear_surfaces()
 		mesh.surface_begin(Mesh.PRIMITIVE_LINE_STRIP)
+		#var color = cel_objects[i].get_node("MeshInstance3D").mesh.material.albedo_color
 		var num_vertices: int = 0
 		for pos in path_arr_arr[i]:
 			if pos == Vector3.ZERO: break
+			#mesh.surface_set_color(color)####doesnt seem to work
 			mesh.surface_add_vertex(pos)
 			num_vertices += 1
 		if num_vertices < 2: continue

@@ -1,6 +1,8 @@
 extends Control
 
 @onready var focus_circle: Sprite2D = $focus_circle
+@onready var arrow1: Line2D = $arrow1
+@onready var arrow2: Line2D = $arrow2
 @onready var potential_focus_circle: Sprite2D = $potential_focus_circle
 @onready var focus_arrow: Sprite2D = $focus_arrow
 @onready var time_label: Label = $VBoxContainer/timespeed
@@ -26,27 +28,20 @@ func update_screensize() -> void:
 
 func _process(delta: float) -> void:
 	update_target_obj_indicators()
+	update_ui_labels()
+	navball_mesh.basis = camera_list[0].global_basis.inverse()
 	
 	if Input.is_action_just_pressed("make_tar_obj_ref_frame") and target_obj != null:
 		change_reference_frame(target_obj)
-	
 	if Input.is_action_just_pressed("time_down"): Global.change_game_speed(Engine.time_scale / 2.)
 	if Input.is_action_just_pressed("time_up"): Global.change_game_speed(Engine.time_scale * 2.)
-	time_label.visible = Engine.time_scale != 1.
-	time_label.text = "t: " + str(Engine.time_scale)
-	
 	if Input.is_action_just_pressed("switch_cam"):
 		camera_list.reverse()
 		camera_list[0].current = true
 		camera_list[1].current = false
 	
 	var vectors := get_cam_move_inputs(delta / Engine.time_scale)
-	if Input.is_action_pressed("boost"): vectors[0] *= camera_list[0].boost_mult
 	camera_list[0].apply_cam_inputs(vectors[0], vectors[1])
-	
-	update_ui_labels()
-	
-	navball_mesh.basis = camera_list[0].global_basis.inverse()
 
 func update_ui_labels() -> void:
 	var has_tar := target_obj != null
@@ -68,6 +63,9 @@ func update_ui_labels() -> void:
 		var grav_accel := Global.get_gravity_accel(cam_pos)
 		var accel_in_tar_dir: float = (grav_accel * tar_dir).maxf(0).length()
 		gravity_label.text = "g_tar: " + str(round_by(accel_in_tar_dir, 2))
+	
+	time_label.visible = Engine.time_scale != 1.
+	time_label.text = "t: " + str(Engine.time_scale)
 
 func round_by(value: float, by: int) -> float:
 	var offset: float = pow(10, by)
@@ -75,12 +73,17 @@ func round_by(value: float, by: int) -> float:
 
 func update_target_obj_indicators() -> void:
 	var camera := camera_list[0]
+	
 	potential_target_obj = Global.get_target_celestial_object(camera.global_position, - camera.global_basis.z)
 	if potential_target_obj == target_obj: potential_target_obj = null
 	var has_potential_target: bool = potential_target_obj != null
 	potential_focus_circle.visible = has_potential_target
 	if has_potential_target:
 		potential_focus_circle.position = camera.unproject_position(potential_target_obj.position)
+		var circlesize: float = 3.
+		circlesize *= potential_target_obj.surface_radius / (potential_target_obj.position - camera.global_position).length()
+		circlesize = clampf(circlesize, 0.1, 0.5) * 1.3
+		potential_focus_circle.scale = Vector2.ONE * circlesize
 	
 	if target_obj == null: 
 		focus_circle.visible = false
@@ -90,8 +93,26 @@ func update_target_obj_indicators() -> void:
 		var in_frustrum: bool = camera.is_position_in_frustum(target_obj.position)
 		focus_circle.visible = in_frustrum
 		focus_arrow.visible = not in_frustrum
+		arrow1.visible = in_frustrum
+		arrow2.visible = in_frustrum
 		if in_frustrum:
 			focus_circle.position = screen_tar_pos
+			var circlesize: float = 3.
+			circlesize *= target_obj.surface_radius / (target_obj.position - camera.global_position).length()
+			circlesize = clampf(circlesize, 0.1, 0.5)
+			focus_circle.scale = Vector2.ONE * circlesize
+			
+			#######instead of cam basis use custom basis looking to tar but rotated up like cam???????
+			var arrowlengthscale: float = 10
+			var vel_diff: Vector3 = camera.get_vel() - target_obj.linear_velocity
+			var vel_right: Vector3 = vel_diff * camera.global_basis.x
+			var vel_up: Vector3 = vel_diff * camera.global_basis.y
+			var dir1 := Vector2.LEFT * signf(vel_right.dot(camera.global_basis.z))
+			var length1 := vel_right.length() * arrowlengthscale
+			var dir2 := Vector2.DOWN * signf(vel_up.dot(camera.global_basis.z))
+			var length2 := vel_up.length() * arrowlengthscale
+			set_arrow_points(arrow1, focus_circle.position + dir1 * circlesize * 450., dir1, length1)
+			set_arrow_points(arrow2, focus_circle.position + dir2 * circlesize * 450., dir2, length2)
 		else:
 			var arrow_dir: Vector2 = screen_tar_pos - screensize / 2#not normalized because not necessary here
 			if camera.is_position_behind(target_obj.position):
@@ -99,9 +120,16 @@ func update_target_obj_indicators() -> void:
 				screen_tar_pos = screensize / 2 + arrow_dir.normalized() * screensize.length() / 2
 			focus_arrow.rotation = arrow_dir.angle()
 			focus_arrow.position = screen_tar_pos.clamp(Vector2.ZERO, screensize)
-			######determine dir using angle between camera dir and tar pos instead of projection and intersect with screenedge instead of clamping
-	
-	#########label d and rel vel to tar
+			###determine dir using angle between camera dir and tar pos instead of projection and intersect with screenedge instead of clamping
+
+func set_arrow_points(node: Line2D, start: Vector2, dir: Vector2, length: float) -> void:
+	var end := start + dir * length
+	node.clear_points()
+	node.add_point(start)
+	node.add_point(end)
+	node.add_point(end - dir.rotated(deg_to_rad(30)) * 20.)
+	node.add_point(end)
+	node.add_point(end - dir.rotated(deg_to_rad(-30)) * 20.)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == 1 and event.pressed:
@@ -122,7 +150,11 @@ func get_cam_move_inputs(delta: float) -> PackedVector3Array:
 	if Input.is_action_pressed("right"): lin_move_v += cam_basis.x
 	if Input.is_action_pressed("left"): lin_move_v -= cam_basis.x
 	lin_move_v = lin_move_v.normalized()
+	if Input.is_action_pressed("match_velocity") and target_obj != null:
+		lin_move_v += (target_obj.linear_velocity - camera_list[0].get_vel()) * 2.#*2 to counteract better
+		lin_move_v = lin_move_v.normalized()
 	lin_move_v *= camera_list[0].lin_move_speed * delta
+	if Input.is_action_pressed("boost"): lin_move_v *= camera_list[0].boost_mult
 	
 	var ang_move_v := Vector3.ZERO
 	ang_move_v.x = mouse_movement_tracking.x
