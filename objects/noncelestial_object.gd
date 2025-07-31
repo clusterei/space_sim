@@ -35,9 +35,11 @@ func update_path() -> void:####maove func to global????
 	for i in range(path_I, num_path_nodes):
 		if previous_positions[i] == Vector3.ZERO: break#to skip if still in proces of filling arr
 		mesh.surface_add_vertex(previous_positions[i])
+		mesh.surface_set_normal(-previous_positions[i])
 		num_vertices += 1
 	for i in range(0, path_I):
 		mesh.surface_add_vertex(previous_positions[i])
+		mesh.surface_set_normal(-previous_positions[i])
 		num_vertices += 1
 	if num_vertices < 2: return#to handle strange error where no vertices are added
 	mesh.surface_end()

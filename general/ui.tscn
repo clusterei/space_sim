@@ -8,6 +8,7 @@
 
 [sub_resource type="Environment" id="Environment_g1kro"]
 background_mode = 1
+background_color = Color(0.347817, 0.347817, 0.347817, 1)
 ambient_light_source = 1
 reflected_light_source = 1
 
@@ -56,6 +57,9 @@ offset_top = 33.0
 offset_right = 214.0
 offset_bottom = 137.0
 
+[node name="tarname" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+
 [node name="tardist" type="Label" parent="VBoxContainer"]
 layout_mode = 2
 
@@ -63,6 +67,9 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="gravaccel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="gamespeed" type="Label" parent="VBoxContainer"]
 layout_mode = 2
 
 [node name="timespeed" type="Label" parent="VBoxContainer"]

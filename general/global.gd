@@ -9,11 +9,11 @@ func get_gravity_accel(pos: Vector3) -> Vector3:
 	var accel := Vector3.ZERO
 	for c_object in cel_objects:
 		var diff: Vector3 = c_object.position - pos
-		var d: float = diff.length()
-		if d == 0.: continue
-		var subsurface_mod: float = min(d / c_object.surface_radius, 1.)
-		var strength: float = grav_constant * c_object.mass / pow(d, 2) * subsurface_mod
-		accel += diff / d * strength
+		var d_sqr: float = diff.length_squared()
+		if d_sqr == 0.: continue
+		var subsurface_mod: float = min(d_sqr / pow(c_object.surface_radius, 2), 1.)
+		var strength: float = grav_constant * c_object.mass / d_sqr * subsurface_mod
+		accel += diff / sqrt(d_sqr) * strength
 	return accel
 
 func get_target_celestial_object(pos: Vector3, dir: Vector3) -> celestial_object:
@@ -43,3 +43,4 @@ func get_target_celestial_object(pos: Vector3, dir: Vector3) -> celestial_object
 func change_game_speed(speed: float) -> void:
 	Engine.time_scale = speed
 	Engine.physics_ticks_per_second = int(max(speed, 1.) * ProjectSettings.get_setting("physics/common/physics_ticks_per_second"))
+	Engine.max_physics_steps_per_frame = int(max(speed, 1.)) * ProjectSettings.get_setting("physics/common/max_physics_steps_per_frame")

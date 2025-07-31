@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://b81q6t3inolfb"]
+[gd_scene load_steps=16 format=3 uid="uid://b81q6t3inolfb"]
 
 [ext_resource type="Script" path="res://general/freecam_control.gd" id="1_m6xeh"]
 [ext_resource type="PackedScene" uid="uid://dwdpyxdivwpdo" path="res://objects/star.tscn" id="2_6cheu"]
@@ -6,47 +6,72 @@
 [ext_resource type="PackedScene" uid="uid://6cplgnfpmr04" path="res://objects/planet_1.tscn" id="4_bo6wf"]
 [ext_resource type="PackedScene" uid="uid://dcqoaunfg2h6k" path="res://objects/planet_2.tscn" id="5_70s17"]
 [ext_resource type="PackedScene" uid="uid://dqy8pfunftkxq" path="res://general/ui.tscn" id="8_k8y41"]
-[ext_resource type="Script" path="res://general/editor_path_predictiontool.gd" id="9_26f1g"]
+[ext_resource type="Script" path="res://general/editor_path_predictiontool.gd" id="9_vtgs0"]
 [ext_resource type="PackedScene" uid="uid://1tivb3ryftoq" path="res://objects/planet_3.tscn" id="9_vvtab"]
+[ext_resource type="Script" path="res://general/star_generator.gd" id="10_jifyk"]
 [ext_resource type="PackedScene" uid="uid://cd3udq8a76ksx" path="res://objects/noncel_testobj.tscn" id="10_pyd7g"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_6x4qy"]
+
+[sub_resource type="Environment" id="Environment_w5h1y"]
+background_mode = 1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xjlqd"]
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+emission_energy_multiplier = 0.1
+
+[sub_resource type="SphereMesh" id="SphereMesh_c8lj2"]
+material = SubResource("StandardMaterial3D_xjlqd")
+radius = 2000.0
+height = 4000.0
+radial_segments = 6
+rings = 3
+
+[sub_resource type="MultiMesh" id="MultiMesh_fyc7h"]
+transform_format = 1
+mesh = SubResource("SphereMesh_c8lj2")
 
 [node name="world" type="Node"]
 
-[node name="temp lighting" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -0.0814342, 0.996679, 0, -0.996679, -0.0814342, 0, 357.39, 0)
-
 [node name="star" parent="." instance=ExtResource("2_6cheu")]
 
-[node name="moon" parent="." instance=ExtResource("3_psg4c")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5519, 0, 0)
-linear_velocity = Vector3(0, 0, -38)
+[node name="templight" type="OmniLight3D" parent="star"]
+light_energy = 10000.0
+light_size = 2000.0
+shadow_blur = 0.0
+omni_range = 9.22337e+18
+
+[node name="twin1" parent="." instance=ExtResource("5_70s17")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3647.08, 0, 0)
+linear_velocity = Vector3(0, 0, -59)
+
+[node name="twin2" parent="." instance=ExtResource("5_70s17")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3914.75, 0, 0)
+linear_velocity = Vector3(0, 0, -48)
 
 [node name="green" parent="." instance=ExtResource("4_bo6wf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5293.57, 0, 0)
 linear_velocity = Vector3(0, 0, -45)
 
-[node name="twin1" parent="." instance=ExtResource("5_70s17")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3363.08, 0, 0)
-linear_velocity = Vector3(0, 0, -59)
-
-[node name="twin2" parent="." instance=ExtResource("5_70s17")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3630.75, 0, 0)
-linear_velocity = Vector3(0, 0, -48)
+[node name="moon" parent="." instance=ExtResource("3_psg4c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5549.11, 0, 0)
+linear_velocity = Vector3(0, 0, -38)
 
 [node name="lone" parent="." instance=ExtResource("5_70s17")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7481.94, 0, 0)
-linear_velocity = Vector3(0, 0, -40)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8956.04, 0, 0)
+linear_velocity = Vector3(0, 0, -35)
 
 [node name="giant" parent="." instance=ExtResource("9_vvtab")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16121.6, 0, 0)
-linear_velocity = Vector3(0, 0, -26)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22086.3, 0, 0)
+linear_velocity = Vector3(0, 0, -22.8)
 
 [node name="moon2" parent="." instance=ExtResource("3_psg4c")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15597, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21561.7, 0, 0)
 
 [node name="moon3" parent="." instance=ExtResource("3_psg4c")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15400.3, 0, 0)
-linear_velocity = Vector3(0, 0, -63)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19435.2, 0, 0)
+linear_velocity = Vector3(0, 0, -43)
 
 [node name="noncel_testobj" parent="." instance=ExtResource("10_pyd7g")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5158.85, 0, 0)
@@ -55,11 +80,31 @@ linear_velocity = Vector3(0, 3, -53)
 [node name="freecam" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 15000, 0)
 current = true
-far = 50000.0
+far = 1e+06
 script = ExtResource("1_m6xeh")
+
+[node name="shadowtest" type="MeshInstance3D" parent="freecam"]
+mesh = SubResource("SphereMesh_6x4qy")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_w5h1y")
 
 [node name="UI" parent="." instance=ExtResource("8_k8y41")]
 
-[node name="editor_path_tool" type="Node" parent="."]
-script = ExtResource("9_26f1g")
-num_steps = 50001
+[node name="editor_path_tool" type="Node" parent="." node_paths=PackedStringArray("ref_frame_obj")]
+script = ExtResource("9_vtgs0")
+ref_frame_obj = NodePath("../star")
+num_steps = 400000
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="editor_path_tool"]
+visible = false
+light_color = Color(1, 0, 1, 1)
+editor_only = true
+sky_mode = 1
+
+[node name="stars" type="MultiMeshInstance3D" parent="."]
+multimesh = SubResource("MultiMesh_fyc7h")
+script = ExtResource("10_jifyk")
+num_stars = 1000
+min_d = 500000.0
+max_d = 800000.0

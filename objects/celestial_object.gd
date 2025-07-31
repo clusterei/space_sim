@@ -3,7 +3,7 @@ class_name celestial_object
 
 @export var surface_radius: float
 
-const num_path_nodes: int = 2000
+const num_path_nodes: int = 1000
 var previous_positions: PackedVector3Array
 var path_I: int
 const path_node_d_limit: float = 300####use angle instead
@@ -37,9 +37,11 @@ func update_path() -> void:
 	for i in range(path_I, num_path_nodes):
 		if previous_positions[i] == Vector3.ZERO: break#to skip if still in proces of filling arr
 		mesh.surface_add_vertex(previous_positions[i])
+		mesh.surface_set_normal(-previous_positions[i])
 		num_vertices += 1
 	for i in range(0, path_I):
 		mesh.surface_add_vertex(previous_positions[i])
+		mesh.surface_set_normal(-previous_positions[i])
 		num_vertices += 1
 	if num_vertices < 2: return#to handle strange error where no vertices are added
 	mesh.surface_end()

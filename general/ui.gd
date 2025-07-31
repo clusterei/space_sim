@@ -6,6 +6,8 @@ extends Control
 @onready var potential_focus_circle: Sprite2D = $potential_focus_circle
 @onready var focus_arrow: Sprite2D = $focus_arrow
 @onready var time_label: Label = $VBoxContainer/timespeed
+@onready var gamespeed_label: Label = $VBoxContainer/gamespeed
+@onready var tarname: Label = $VBoxContainer/tarname
 @onready var gravity_label: Label = $VBoxContainer/gravaccel
 @onready var distance_label: Label = $VBoxContainer/tardist
 @onready var relspeed_label: Label = $VBoxContainer/tarrelvel
@@ -28,7 +30,7 @@ func update_screensize() -> void:
 
 func _process(delta: float) -> void:
 	update_target_obj_indicators()
-	update_ui_labels()
+	update_ui_labels(delta)
 	navball_mesh.basis = camera_list[0].global_basis.inverse()
 	
 	if Input.is_action_just_pressed("make_tar_obj_ref_frame") and target_obj != null:
@@ -43,12 +45,14 @@ func _process(delta: float) -> void:
 	var vectors := get_cam_move_inputs(delta / Engine.time_scale)
 	camera_list[0].apply_cam_inputs(vectors[0], vectors[1])
 
-func update_ui_labels() -> void:
+func update_ui_labels(delta: float) -> void:
 	var has_tar := target_obj != null
-	gravity_label.visible = has_tar
+	gravity_label.visible = has_tar####make one vbox to address at once
 	distance_label.visible = has_tar
 	relspeed_label.visible = has_tar
+	tarname.visible = has_tar
 	if has_tar:
+		tarname.text = target_obj.name
 		var cam_pos: Vector3 = camera_list[0].global_position
 		var diff_to_tar := target_obj.global_position - cam_pos
 		var d_to_tar := diff_to_tar.length()
@@ -66,6 +70,8 @@ func update_ui_labels() -> void:
 	
 	time_label.visible = Engine.time_scale != 1.
 	time_label.text = "t: " + str(Engine.time_scale)
+	
+	gamespeed_label.text = "gamespeed: " + str(round_by(Engine.time_scale / delta / ProjectSettings.get_setting("physics/common/physics_ticks_per_second"), 2))
 
 func round_by(value: float, by: int) -> float:
 	var offset: float = pow(10, by)
@@ -73,8 +79,9 @@ func round_by(value: float, by: int) -> float:
 
 func update_target_obj_indicators() -> void:
 	var camera := camera_list[0]
+	var cam_basis := camera.global_basis
 	
-	potential_target_obj = Global.get_target_celestial_object(camera.global_position, - camera.global_basis.z)
+	potential_target_obj = Global.get_target_celestial_object(camera.global_position, - cam_basis.z)
 	if potential_target_obj == target_obj: potential_target_obj = null
 	var has_potential_target: bool = potential_target_obj != null
 	potential_focus_circle.visible = has_potential_target
@@ -96,21 +103,36 @@ func update_target_obj_indicators() -> void:
 		arrow1.visible = in_frustrum
 		arrow2.visible = in_frustrum
 		if in_frustrum:
+			var diff_to_tar := target_obj.position - camera.global_position
+			var d_to_tar := diff_to_tar.length()
+			
 			focus_circle.position = screen_tar_pos
 			var circlesize: float = 3.
-			circlesize *= target_obj.surface_radius / (target_obj.position - camera.global_position).length()
+			circlesize *= target_obj.surface_radius / d_to_tar
 			circlesize = clampf(circlesize, 0.1, 0.5)
 			focus_circle.scale = Vector2.ONE * circlesize
 			
-			#######instead of cam basis use custom basis looking to tar but rotated up like cam???????
-			var arrowlengthscale: float = 10
+			
+			
+			return##############################
 			var vel_diff: Vector3 = camera.get_vel() - target_obj.linear_velocity
-			var vel_right: Vector3 = vel_diff * camera.global_basis.x
-			var vel_up: Vector3 = vel_diff * camera.global_basis.y
-			var dir1 := Vector2.LEFT * signf(vel_right.dot(camera.global_basis.z))
-			var length1 := vel_right.length() * arrowlengthscale
-			var dir2 := Vector2.DOWN * signf(vel_up.dot(camera.global_basis.z))
-			var length2 := vel_up.length() * arrowlengthscale
+			var dir_v: Vector3 = diff_to_tar / d_to_tar
+			var reduced_vel_diff := vel_diff * (Vector3.ONE - dir_v)
+			var side_vel_vector := - Vector2(reduced_vel_diff.dot(dir_v.cross(cam_basis.y)), reduced_vel_diff.dot(dir_v.cross(cam_basis.x))) 
+			#print(side_vel_vector)
+			
+			#var to_tar_basis: Basis = Basis(diff_to_tar, diff_to_tar.cross(cam_basis.x), Vector3.ONE).orthonormalized()#########better than cam basis??????????
+			var arrowlengthscale: float = 10
+			side_vel_vector *= arrowlengthscale
+			
+			#var vel_right: Vector3 = vel_diff * to_tar_basis.z
+			#var vel_up: Vector3 = vel_diff * to_tar_basis.y
+			#print(signf(vel_right.dot(cam_basis.x)), " ", signf(vel_right.dot(cam_basis.y)), " ", signf(vel_right.dot(cam_basis.z)))
+			
+			var length1: float = abs(side_vel_vector.x)#vel_right.length() * arrowlengthscale
+			var length2: float = abs(side_vel_vector.y)#vel_up.length() * arrowlengthscale
+			var dir2 := Vector2.UP * signf(side_vel_vector.x)# * signf(vel_up.dot(cam_basis.z))
+			var dir1 := Vector2.LEFT * signf(side_vel_vector.y)############### * signf(vel_right.dot(cam_basis.z))
 			set_arrow_points(arrow1, focus_circle.position + dir1 * circlesize * 450., dir1, length1)
 			set_arrow_points(arrow2, focus_circle.position + dir2 * circlesize * 450., dir2, length2)
 		else:
